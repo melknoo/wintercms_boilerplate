@@ -1,0 +1,10 @@
+name: Autocomplete
+form: $/melvin/mtgmoney/models/cards/fields.yaml
+modelClass: Melvin\Mtgmoney\Models\Cards
+defaultRedirect: melvin/mtgmoney/autocomplete
+create:
+    redirect: 'melvin/mtgmoney/autocomplete/update/:id'
+    redirectClose: melvin/mtgmoney/autocomplete
+update:
+    redirect: melvin/mtgmoney/autocomplete
+    redirectClose: melvin/mtgmoney/autocomplete

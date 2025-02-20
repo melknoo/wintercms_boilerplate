@@ -1,0 +1,13 @@
+fields:
+    name:
+        label: Name
+        span: auto
+        type: text
+    type:
+        label: Type
+        span: auto
+        type: text
+    set:
+        label: Set
+        span: auto
+        type: text

@@ -1,0 +1,12 @@
+list: $/melvin/mtgmoney/models/pricelogger/columns.yaml
+modelClass: Melvin\Mtgmoney\Models\PriceLogger
+title: PriceLogger
+noRecordsMessage: 'backend::lang.list.no_records'
+showSetup: true
+showCheckboxes: true
+recordsPerPage: 20
+toolbar:
+    buttons: list_toolbar
+    search:
+        prompt: 'backend::lang.list.search_prompt'
+recordUrl: 'melvin/mtgmoney/pricelogger/update/:id'

@@ -1,0 +1,7 @@
+{% if card %}
+<div class="m-x-auto mtg--img-wrapper d-inline-block">
+    <img class="d-block mtg--img" src="{{ card['image'] }}">
+    <a style="margin: 10px" class="btn-success btn" target="_blank" href="{{ buy_url }}">KAUFEN</a>
+    <button class="btn btn-info" data-request="onSimpleData" data-request-flash data-request-data="id: {{ card_id }}">Daten vereinfachen</button>
+</div>
+{% endif %}

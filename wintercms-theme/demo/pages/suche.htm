@@ -1,0 +1,148 @@
+title = "Suche"
+url = "/suche"
+layout = "default"
+is_hidden = 0
+
+[session]
+security = "user"
+redirect = "login"
+==
+<?php
+use Melvin\Mtgmoney\Models\Cards;
+use Melvin\Mtgmoney\Models\MTGJson;
+
+function onStart() {
+    
+}
+function getUserId() {
+    $user_id = null;
+    $user = null;
+    $user = Auth::getUser();
+    if(isset($user)) {
+        return $user['id'];
+    }
+    else {
+        return $user_id;
+    }
+}
+function onSearchCard() {
+    $name = post('card_name');
+    $name = ucwords($name);
+    $user_id = $this->getUserId();
+    $display = null;
+    $booster = null;
+    $display = post('display');
+    $booster = post('booster');
+    $card = null;
+    $card_id = null;
+    $card_img = null;
+    $sets = null;
+    if(strlen($name)>0) {
+        $card = new Cards();
+        $card = $card->checkIfCardExists($name, $user_id);
+        $sets = MTGJson::GetAllSetsByCardName($name);
+    }
+    if($display == null) {
+        $display = 0;
+    }
+    if($booster == null) {
+        $booster = 0;
+    }
+    if(!isset($card)) {
+        $response = Cards::SearchCard($name, $display, $booster);
+        $cardObjForImage = new Cards();
+        $cardObjForImage->name = $name;
+        $card_img = $cardObjForImage->getMagicCardImageURL();
+    }
+    else {
+        $card_id = $card->id;
+        $ugly = $card->price;
+        $card_img = $card->image;
+        $response = Cards::MakePriceGreatAgain($ugly);
+    }
+    $this['price_result'] = $response;
+    $this['sets'] = $sets;
+    $this['card_name'] = $name;
+    $this['card_image'] = $card_img;
+    $this['booster'] = $booster;
+    $this['display'] = $display;
+    $this['card_id'] = $card_id;
+    $this['card_exists'] = $card;
+    if(isset($card)) {
+        $this['card_exists'] = true;
+    }
+    return [
+        '#price_response' => $this->renderPartial('price')
+    ];
+    return $response;
+}
+function onNewCard() {
+    $card = new Cards();
+    $name = null;
+    $display = false;
+    $booster = false;
+    $display = post('display');
+    $booster = post('booster');
+    $name = post('card_name');
+    $price = post('price_new_card');
+    $user_id = $this->getUserId();
+    $card_exists = null;
+    if(strlen($name)>0) {
+        $card_exists = $card->checkIfCardExists($name, $user_id);
+        if(!isset($card_exists) && strlen($price)>0 && isset($user_id)) {
+            $price = Cards::TransformPrice($price);
+            $card->name = $name;
+            $card->price = $price;
+            $card->user_id = $user_id;
+            $card->is_booster = $booster;
+            $card->is_display = $display;
+            $card->addNewCard();
+            Flash::success('Erfolgreich hinzugefügt!');
+            return [
+                '#search_form' => $this->renderPartial('_search_form'),
+                '#price_response' => $this->renderPartial('price')
+            ];
+        }
+        else {
+            throw new ValidationException(['new_card' => 'Karte konnte nicht hinzugefügt werden']);
+        }
+    }
+}
+function onFlashTest() {
+
+    Flash::success('Erfolgreich hinzugefügt!');
+}
+?>
+==
+<div class="container">
+
+    <div class="page-header">
+        <h2>Karten Preise <small>Suche</small></h2>
+    </div>
+
+
+
+    <div class="mtg--row">
+        <div class="" id="search_form">{% partial '_search_form' %}</div>
+        <div class="" id="price_response">{% partial 'price' %}</div>
+    </div>
+</div>
+<script>
+
+    $("input:checkbox").on('click', function() {
+        // in the handler, 'this' refers to the box clicked on
+        var $box = $(this);
+        if ($box.prop("checked")) {
+            // the name of the box is retrieved using the .attr() method
+            // as it is assumed and expected to be immutable
+            var group = "input:checkbox";
+            // the checked state of the group/box on the other hand will change
+            // and the current value is retrieved using .prop() method
+            $(group).prop("checked", false);
+            $box.prop("checked", true);
+        } else {
+            console.log("in else");
+            $box.prop("checked", false);
+        }
+    });
+</script>

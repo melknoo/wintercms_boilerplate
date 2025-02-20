@@ -1,0 +1,11 @@
+plugin:
+
+    name: 'plugin.name'
+
+    description: 'plugin.description'
+
+    author: name
+
+    icon: icon
+
+    homepage: ''

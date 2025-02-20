@@ -1,0 +1,10 @@
+name: MTGJson
+form: $/melvin/mtgmoney/models/mtgjson/fields.yaml
+modelClass: Melvin\Mtgmoney\Models\MTGJson
+defaultRedirect: melvin/mtgmoney/mtgjson
+create:
+    redirect: 'melvin/mtgmoney/mtgjson/update/:id'
+    redirectClose: melvin/mtgmoney/mtgjson
+update:
+    redirect: melvin/mtgmoney/mtgjson
+    redirectClose: melvin/mtgmoney/mtgjson

@@ -1,0 +1,10 @@
+name: PriceLogger
+form: $/melvin/mtgmoney/models/pricelogger/fields.yaml
+modelClass: Melvin\Mtgmoney\Models\PriceLogger
+defaultRedirect: melvin/mtgmoney/pricelogger
+create:
+    redirect: 'melvin/mtgmoney/pricelogger/update/:id'
+    redirectClose: melvin/mtgmoney/pricelogger
+update:
+    redirect: melvin/mtgmoney/pricelogger
+    redirectClose: melvin/mtgmoney/pricelogger

@@ -1,0 +1,38 @@
+version: '2.2'
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ${WEB_CONTAINER_NAME}
+    ports:
+      - 80:80
+    volumes:
+      - ${THEME_FOLDER}:/var/www/html/themes
+      - ${PLUGINS_FOLDER}:/var/www/html/plugins
+      - ${STORAGE_APP}:/var/www/html/storage/app
+      - ${STORAGE_UPLOADS}:/var/www/html/storage/uploads
+      - ${STORAGE_LOGS}:/var/www/html/storage/cms/logs
+    environment:
+      - TZ=${TZ}
+      - DB_TYPE=${DB_TYPE}
+      - DB_HOST=${DB_HOST}
+      - DB_DATABASE=${DB_DATABASE}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+    command: >
+      sh -c "COMPOSER_MEMORY_LIMIT=-1 composer update && php artisan migrate && chmod 777 -R ../html && printenv > /etc/environment && apache2-foreground"
+
+  mysql:
+    container_name: db
+    image: mysql:5.7
+    volumes:
+      - mysql_data:/var/lib/mysql
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+
+volumes:
+  mysql_data:

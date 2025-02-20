@@ -1,0 +1,10 @@
+name: Cards
+form: $/melvin/mtgmoney/models/cards/fields.yaml
+modelClass: Melvin\Mtgmoney\Models\Cards
+defaultRedirect: melvin/mtgmoney/cards
+create:
+    redirect: 'melvin/mtgmoney/cards/update/:id'
+    redirectClose: melvin/mtgmoney/cards
+update:
+    redirect: melvin/mtgmoney/cards
+    redirectClose: melvin/mtgmoney/cards

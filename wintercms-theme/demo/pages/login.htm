@@ -1,0 +1,44 @@
+title = "login"
+url = "/login"
+layout = "default"
+is_hidden = 0
+
+[account]
+redirect = "home"
+paramCode = "code"
+forceSecure = 0
+requirePassword = 0
+
+[session]
+security = "all"
+redirect = "home"
+==
+<div class="container">
+    <div class="page-header">
+        {% if user %}
+        <h2>Profil</h2>
+        {% else %}
+        <h2>Sign in</h2>
+        {% endif %}
+
+    </div>
+{% if not user %}
+    {% partial 'signin' %}
+<a href="{{ 'register'|page }}">No Account yet? Register</a>
+
+
+
+{% else %}
+    <div class="mtg--profile-wrapper">
+        {% partial __SELF__ ~ '::activation_check' %}
+        {% if user.avatar %}
+        <img class="mtg--profile-img w-100" src="{{ user.avatar.path }}" alt="Profilbild">
+        {% endif %}
+        {% partial 'update' %}
+    
+        {% partial __SELF__ ~ '::deactivate_link' %}
+    
+    </div>
+    
+{% endif %}
+</div>

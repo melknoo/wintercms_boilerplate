@@ -1,0 +1,4 @@
+title: MTGJson
+modelClass: Melvin\Mtgmoney\Models\MTGJson
+toolbar:
+    buttons: reorder_toolbar

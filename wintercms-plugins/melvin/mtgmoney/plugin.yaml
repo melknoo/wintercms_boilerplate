@@ -1,0 +1,23 @@
+plugin:
+    name: 'melvin.mtgmoney::lang.plugin.name'
+    description: 'melvin.mtgmoney::lang.plugin.description'
+    author: Melvin
+    icon: wn-icon-money
+    replaces: {  }
+navigation:
+    main-menu-item:
+        label: 'Magic Karten'
+        url: melvin/mtgmoney/cards
+        icon: icon-money
+    main-menu-item2:
+        label: Preise
+        url: melvin/mtgmoney/pricelogger
+        icon: icon-diamond
+    main-menu-item3:
+        label: MTGJson
+        url: melvin/mtgmoney/mtgjson
+        icon: icon-database
+    main-menu-item4:
+        label: Autocomplete
+        url: melvin/mtgmoney/autocomplete
+        icon: icon-search
