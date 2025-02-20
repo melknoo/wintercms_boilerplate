@@ -1,10 +1,10 @@
 <?php namespace Winter\User\Classes;
 
-use Winter\Storm\Auth\Manager as StormAuthManager;
+use Winter\Storm\Auth\Manager as RainAuthManager;
 use Winter\User\Models\Settings as UserSettings;
 use Winter\User\Models\UserGroup as UserGroupModel;
 
-class AuthManager extends StormAuthManager
+class AuthManager extends RainAuthManager
 {
     protected static $instance;
 

@@ -1,4 +1,0 @@
-title: PriceLogger
-modelClass: Melvin\Mtgmoney\Models\PriceLogger
-toolbar:
-    buttons: reorder_toolbar

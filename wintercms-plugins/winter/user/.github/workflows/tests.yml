@@ -9,17 +9,11 @@ on:
 jobs:
   phpUnitTests:
     runs-on: ubuntu-latest
-    name: Unit Tests / PHP ${{ matrix.phpVersion }} / Winter ${{ matrix.winterRelease }}
+    name: Unit Tests / PHP ${{ matrix.phpVersions }}
     strategy:
       max-parallel: 6
       matrix:
-        phpVersion: ['8.0', '8.1']
-        winterRelease: ['develop']
-        winterReleaseDir: ['develop']
-        include:
-          - phpVersion: '7.4'
-            winterRelease: 'v1.1.9'
-            winterReleaseDir: '1.1.9'
+        phpVersions: ['7.2', '7.3', '7.4', '8.0']
       fail-fast: false
     env:
       phpExtensions: mbstring, intl, gd, xml, sqlite
@@ -35,7 +29,7 @@ jobs:
         id: extcache
         uses: shivammathur/cache-extensions@v1
         with:
-          php-version: ${{ matrix.phpVersion }}
+          php-version: ${{ matrix.phpVersions }}
           extensions: ${{ env.phpExtensions }}
           key: ${{ env.cacheKey }}
 
@@ -49,19 +43,19 @@ jobs:
       - name: Install PHP and extensions
         uses: shivammathur/setup-php@v2
         with:
-          php-version: ${{ matrix.phpVersion }}
+          php-version: ${{ matrix.phpVersions }}
           extensions: ${{ env.phpExtensions }}
           tools: composer:v2
           coverage: none
 
       - name: Install Winter CMS
         run: |
-          wget https://github.com/wintercms/winter/archive/${{ matrix.winterRelease }}.zip
-          unzip ${{ matrix.winterRelease }}.zip
-          rm ${{ matrix.winterRelease }}.zip
+          wget https://github.com/wintercms/winter/archive/${{ env.winterCmsRelease }}.zip
+          unzip ${{ env.winterCmsRelease }}.zip
+          rm ${{ env.winterCmsRelease }}.zip
           shopt -s dotglob
-          mv winter-${{ matrix.winterReleaseDir }}/* ./
-          rmdir winter-${{ matrix.winterReleaseDir }}
+          mv winter-${{ env.winterCmsRelease }}/* ./
+          rmdir winter-${{ env.winterCmsRelease }}
           shopt -u dotglob
           cp config/cms.php config/testing/cms.php
           mkdir -p plugins/winter
@@ -84,11 +78,7 @@ jobs:
       - name: Run linting
         run: ./vendor/bin/parallel-lint plugins/winter/user
 
-      - name: Run unit tests (1.2/develop)
-        if: matrix.winterRelease != 'v1.1.9'
-        run: php artisan winter:test -p Winter.User -- --testdox
-
-      - name: Run unit tests (1.1)
-        if: matrix.winterRelease == 'v1.1.9'
-        working-directory: plugins/winter/user
-        run: ../../../vendor/bin/phpunit --bootstrap ../../../tests/bootstrap.php --testdox
+      - name: Run unit tests
+        run: |
+          cd plugins/winter/user
+          ../../../vendor/bin/phpunit

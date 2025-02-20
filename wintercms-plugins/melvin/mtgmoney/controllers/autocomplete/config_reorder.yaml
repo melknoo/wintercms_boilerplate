@@ -1,4 +1,0 @@
-title: Autocomplete
-modelClass: Melvin\Mtgmoney\Models\Cards
-toolbar:
-    buttons: reorder_toolbar

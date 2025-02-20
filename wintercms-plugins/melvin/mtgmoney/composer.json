@@ -1,7 +1,0 @@
-{
-  "autoload": {
-    "files": [
-      "simple_html_dom.php"
-    ]
-  }
-}

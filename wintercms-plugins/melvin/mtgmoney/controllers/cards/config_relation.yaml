@@ -1,6 +1,0 @@
-price_logger_relation:
-    label: 'Prices'
-    view:
-        list: ~/plugins/melvin/mtgmoney/models/pricelogger/columns.yaml
-        toolbarButtons: delete
-    

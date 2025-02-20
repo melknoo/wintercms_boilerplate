@@ -1,6 +1,4 @@
-<h3>Profile</h3>
-
-{{ form_ajax('onUpdate', { flash: 1 }) }}
+{{ form_ajax('onUpdate') }}
 
     <div class="form-group">
         <label for="accountName">Full Name</label>
@@ -20,24 +18,6 @@
     <div class="form-group">
         <label for="accountPasswordConfirm">Confirm New Password</label>
         <input name="password_confirmation" type="password" class="form-control" id="accountPasswordConfirm">
-    </div>
-
-    <div class="form-group">
-        <label for="accountAvatar">Display Picture</label>
-        <input
-            name="avatar"
-            type="file"
-            class="form-control"
-            id="accountAvatar"
-            accept="image/jpg, image/jpeg, image/png, image/gif, image/webp"
-            capture="user"
-        >
-
-        {% if user.avatar %}
-            <a href="javascript:;" data-request="onRemoveAvatar" data-request-flash class="remove-avatar">
-                Remove current display picture
-            </a>
-        {% endif %}
     </div>
 
     {% if updateRequiresPassword %}

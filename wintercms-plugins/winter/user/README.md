@@ -1,13 +1,13 @@
 # Front-end user plugin
 
-[![Build Status](https://img.shields.io/github/actions/workflow/status/wintercms/wn-user-plugin/tests.yml?branch=main)](https://github.com/wintercms/wn-user-plugin/actions)
+[![Build Status](https://img.shields.io/github/workflow/status/wintercms/wn-user-plugin/Tests)](https://github.com/wintercms/wn-user-plugin/actions)
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/wintercms/wn-user-plugin/blob/master/LICENCE.md)
 
 Front-end user management for Winter CMS.
 
 ## Requirements
 
-This plugin requires either [Snowboard framework](https://wintercms.com/docs/snowboard/introduction) or the original [Ajax Framework](https://wintercms.com/docs/ajax/introduction) to be included in your layout or page in order to handle form requests.
+This plugin requires the [Ajax Framework](https://wintercms.com/docs/cms/ajax) to be included in your layout/page in order to handle form requests.
 
 ## Managing users
 
@@ -67,7 +67,7 @@ You can check the logged in user by accessing the **{{ user }}** Twig variable:
 
 The Session component allows a user to sign out of their session.
 
-    <a href="javascript:;" data-request="onLogout" data-request-data="redirect: '/good-bye'">Sign out</a>
+    <a data-request="onLogout" data-request-data="redirect: '/good-bye'">Sign out</a>
 
 ### Page restriction
 
@@ -143,7 +143,7 @@ We can add any other additional fields here too, such as `phone`, `company`, etc
 
 ## Password length requirements
 
-By default, the User plugin requires a minimum password length of 8 characters for all users when registering or changing their password. You can change this length requirement by going to config/config.php. Inside the file, change the value of the ***minPasswordLength*** parameter to your own.
+By default, the User plugin requires a minimum password length of 8 characters for all users when registering or changing their password. You can change this length requirement by going to backend and navigating to System > Users > User Settings. Inside the Registration tab, a **Minimum password length** field is provided, allowing you to increase or decrease this limit to your preferred length.
 
 ## Error handling
 
@@ -172,8 +172,6 @@ The User plugin displays AJAX error messages in a simple ``alert()``-box by defa
     </script>
 
 ### Checking if a login name is already taken
-
->**NOTE**: Implementing the below example may be a privacy risk as it allows unauthenticated users to query your service to see if given email addresses are signed up to your service or not.
 
 Here is a simple example of how you can quickly check if an email address / username is available in your registration forms. First, inside the page code, define the following AJAX handler to check the login name, here we are using the email address:
 
@@ -305,7 +303,6 @@ This plugin will fire some global events that can be useful for interacting with
 - **winter.user.beforeAuthenticate**: Before the user is attempting to authenticate using the Account component.
 - **winter.user.login**: The user has successfully signed in.
 - **winter.user.logout**: The user has successfully signed out.
-- **winter.user.activate**: The user has activated their own account by email validation.
 - **winter.user.deactivate**: The user has opted-out of the site by deactivating their account. This should be used to disable any content the user may want removed.
 - **winter.user.reactivate**: The user has reactivated their own account by signing back in. This should revive the users content on the site.
 - **winter.user.getNotificationVars**: Fires when sending a user notification to enable passing more variables to the email templates. Passes the `$user` model the template will be for.

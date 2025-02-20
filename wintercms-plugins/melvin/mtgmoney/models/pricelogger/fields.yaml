@@ -1,5 +1,0 @@
-fields:
-    price:
-        label: Preis
-        span: auto
-        type: text
