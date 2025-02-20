@@ -1,20 +1,30 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>{% placeholder page_title default %}{{ this.page.title }}{% endplaceholder %}</title>
-        {% partial "meta/styles" %}
-        {% partial "meta/seo" %}
-        <meta name="generator" content="Winter CMS">
-    </head>
-    {% set pageId = this.page.id %}
-    {% set pageTitle = this.page.title %}
-    {% if pageId is empty %}
-        {% set pageId = page.id %}
-    {% endif %}
-    {% if pageTitle is empty %}
-        {% set pageTitle = page.title %}
-    {% endif %}
-    <body class="page-{{ pageId }} layout-{{ this.layout.id }}">
+==
+function onStart()
+{
+    $this['backendUrl'] = Backend::url('/');
+}
+==
+<!-- Nav -->
+<nav id="layout-nav" class="navbar navbar-inverse navbar-fixed-top navbar-autohide" role="navigation">
+    <div class="container">
+        <div class="mtg--navbar-header navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-main-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Title</a>
+        </div>
+        <div class="collapse navbar-collapse navbar-main-collapse">
+            <ul class="nav navbar-nav">
+                <li class="separator hidden-xs"></li>
+                <li class="{% if this.page.id == 'home' %}active{% endif %}"><a href="/">Page1</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="jumbotron mtg--header-img">
+    <div class="container">
+    </div>
+</div>
