@@ -1,13 +1,13 @@
 # Front-end user plugin
 
-[![Build Status](https://img.shields.io/github/actions/workflow/status/wintercms/wn-user-plugin/tests.yml?branch=main)](https://github.com/wintercms/wn-user-plugin/actions)
+[![Build Status](https://img.shields.io/github/workflow/status/wintercms/wn-user-plugin/Tests)](https://github.com/wintercms/wn-user-plugin/actions)
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/wintercms/wn-user-plugin/blob/master/LICENCE.md)
 
 Front-end user management for Winter CMS.
 
 ## Requirements
 
-This plugin requires either [Snowboard framework](https://wintercms.com/docs/v1.2/docs/snowboard/introduction) or the original [Ajax Framework](https://wintercms.com/docs/v1.2/docs/ajax/introduction) to be included in your layout or page in order to handle form requests.
+This plugin requires the [Ajax Framework](https://wintercms.com/docs/cms/ajax) to be included in your layout/page in order to handle form requests.
 
 ## Managing users
 
@@ -55,36 +55,30 @@ The session component should be added to a layout that has registered users. It 
 
 ### User variable
 
-You can check the logged in user by accessing the `{{ user }}` Twig variable:
+You can check the logged in user by accessing the **{{ user }}** Twig variable:
 
-```twig
-{% if user %}
-    <p>Hello {{ user.name }}</p>
-{% else %}
-    <p>Nobody is logged in</p>
-{% endif %}
-```
+    {% if user %}
+        <p>Hello {{ user.name }}</p>
+    {% else %}
+        <p>Nobody is logged in</p>
+    {% endif %}
 
 ### Signing out
 
 The Session component allows a user to sign out of their session.
 
-```html
-<a href="javascript:;" data-request="onLogout" data-request-data="redirect: '/good-bye'">Sign out</a>
-```
+    <a data-request="onLogout" data-request-data="redirect: '/good-bye'">Sign out</a>
 
 ### Page restriction
 
 The Session component allows the restriction of a page or layout by allowing only signed in users, only guests or no restriction. This example shows how to restrict a page to users only:
 
-```ini
-title = "Restricted page"
-url = "/users-only"
+    title = "Restricted page"
+    url = "/users-only"
 
-[session]
-security = "user"
-redirect = "home"
-```
+    [session]
+    security = "user"
+    redirect = "home"
 
 The `security` property can be user, guest or all. The `redirect` property refers to a page name to redirect to when access is restricted.
 
@@ -92,26 +86,22 @@ The `security` property can be user, guest or all. The `redirect` property refer
 
 Access to routes can be restricted by applying the `AuthMiddleware`.
 
-```php
-Route::group(['middleware' => 'Winter\User\Classes\AuthMiddleware'], function () {
-    // All routes here will require authentication
-});
-```
+    Route::group(['middleware' => 'Winter\User\Classes\AuthMiddleware'], function () {
+        // All routes here will require authentication
+    });
 
 ## Account component
 
 The account component provides a user sign in form, registration form, activation form and update form. To display the form:
 
-```ini
-title = "Account"
-url = "/account/:code?"
+    title = "Account"
+    url = "/account/:code?"
 
-[account]
-redirect = "home"
-paramCode = "code"
-==
-{% component 'account' %}
-```
+    [account]
+    redirect = "home"
+    paramCode = "code"
+    ==
+    {% component 'account' %}
 
 If the user is logged out, this will display a sign in and registration form. Otherwise, it will display an update form. The `redirect` property is the page name to redirect to after the submit process is complete. The `paramCode` is the URL routing code used for activating the user, only used if the feature is enabled.
 
@@ -119,15 +109,13 @@ If the user is logged out, this will display a sign in and registration form. Ot
 
 The reset password component allows a user to reset their password if they have forgotten it.
 
-```ini
-title = "Forgotten your password?"
-url = "/forgot-password/:code?"
+    title = "Forgotten your password?"
+    url = "/forgot-password/:code?"
 
-[resetPassword]
-paramCode = "code"
-==
-{% component 'resetPassword' %}
-```
+    [resetPassword]
+    paramCode = "code"
+    ==
+    {% component 'resetPassword' %}
 
 This will display the initial restoration request form and also the password reset form used after the verification email has been received by the user. The `paramCode` is the URL routing code used for resetting the password.
 
@@ -135,107 +123,93 @@ This will display the initial restoration request form and also the password res
 
 By default the User plugin will use the email address as the login name. To switch to using a user defined login name, navigate to the backend under System > Users > User Settings and change the Login attribute under the Sign in tab to be **Username**. Then simply ask for a username upon registration by adding the username field:
 
-```html
-<form data-request="onRegister">
-    <label>Full Name</label>
-    <input name="name" type="text" placeholder="Enter your full name">
+    <form data-request="onRegister">
+        <label>Full Name</label>
+        <input name="name" type="text" placeholder="Enter your full name">
 
-    <label>Email</label>
-    <input name="email" type="email" placeholder="Enter your email">
+        <label>Email</label>
+        <input name="email" type="email" placeholder="Enter your email">
 
-    <label>Username</label>
-    <input name="username" placeholder="Pick a login name">
+        <label>Username</label>
+        <input name="username" placeholder="Pick a login name">
 
-    <label>Password</label>
-    <input name="password" type="password" placeholder="Choose a password">
+        <label>Password</label>
+        <input name="password" type="password" placeholder="Choose a password">
 
-    <button type="submit">Register</button>
-</form>
-```
+        <button type="submit">Register</button>
+    </form>
 
 We can add any other additional fields here too, such as `phone`, `company`, etc.
 
 ## Password length requirements
 
-By default, the User plugin requires a minimum password length of 8 characters for all users when registering or changing their password. You can change this length requirement by going to config/config.php. Inside the file, change the value of the `minPasswordLength` parameter to your own.
+By default, the User plugin requires a minimum password length of 8 characters for all users when registering or changing their password. You can change this length requirement by going to backend and navigating to System > Users > User Settings. Inside the Registration tab, a **Minimum password length** field is provided, allowing you to increase or decrease this limit to your preferred length.
 
 ## Error handling
 
 ### Flash messages
 
-This plugin makes use of Winter CMS's [Flash API](https://wintercms.com/docs/v1.2/markup/tags/flash). In order to display the error messages, you need to place the following snippet in your layout or page.
+This plugin makes use of Winter CMS's [`Flash API`](https://wintercms.com/docs/markup/tag-flash). In order to display the error messages, you need to place the following snippet in your layout or page.
 
-```twig
-{% flash %}
-    <div class="alert alert-{{ type == 'error' ? 'danger' : type }}">{{ message }}</div>
-{% endflash %}
-```
+    {% flash %}
+        <div class="alert alert-{{ type == 'error' ? 'danger' : type }}">{{ message }}</div>
+    {% endflash %}
 
 ### AJAX errors
 
-The User plugin displays AJAX error messages in a simple `alert()`-box by default. However, this might scare non-technical users. You can change the default behavior of an AJAX error from displaying an `alert()` message, like this:
+The User plugin displays AJAX error messages in a simple ``alert()``-box by default. However, this might scare non-technical users. You can change the default behavior of an AJAX error from displaying an ``alert()`` message, like this:
 
-```html
-<script>
-    $(window).on('ajaxErrorMessage', function (event, message) {
+    <script>
+        $(window).on('ajaxErrorMessage', function (event, message){
 
-        // This can be any custom JavaScript you want
-        alert('Something bad happened, mate, here it is: ' + message);
+            // This can be any custom JavaScript you want
+            alert('Something bad happened, mate, here it is: ' + message);
 
-        // This will stop the default alert() message
-        event.preventDefault();
+            // This will stop the default alert() message
+            event.preventDefault();
 
-    })
-</script>
-```
+        })
+    </script>
 
 ### Checking if a login name is already taken
 
->**NOTE**: Implementing the below example may be a privacy risk as it allows unauthenticated users to query your service to see if given email addresses are signed up to your service or not.
-
 Here is a simple example of how you can quickly check if an email address / username is available in your registration forms. First, inside the page code, define the following AJAX handler to check the login name, here we are using the email address:
 
-```php
-public function onCheckEmail()
-{
-    return ['isTaken' => Auth::findUserByLogin(post('email')) ? 1 : 0];
-}
-```
+    public function onCheckEmail()
+    {
+        return ['isTaken' => Auth::findUserByLogin(post('email')) ? 1 : 0];
+    }
 
 For the email input we use the `data-request` and `data-track-input` attributes to call the `onCheckEmail` handler any time the field is updated. The `data-request-success` attribute will call some jQuery code to toggle the alert box.
 
-```html
-<div class="form-group">
-    <label>Email address</label>
-    <input
-        name="email"
-        type="email"
-        class="form-control"
-        data-request="onCheckEmail"
-        data-request-success="$('#loginTaken').toggle(!!data.isTaken)"
-        data-track-input />
-</div>
+    <div class="form-group">
+        <label>Email address</label>
+        <input
+            name="email"
+            type="email"
+            class="form-control"
+            data-request="onCheckEmail"
+            data-request-success="$('#loginTaken').toggle(!!data.isTaken)"
+            data-track-input />
+    </div>
 
-<div id="loginTaken" class="alert alert-danger" style="display: none">
-    Sorry, that login name is already taken.
-</div>
-```
+    <div id="loginTaken" class="alert alert-danger" style="display: none">
+        Sorry, that login name is already taken.
+    </div>
 
 ## Overriding functionality
 
 Here is how you would override the `onSignin()` handler to log any error messages. Inside the page code, define this method:
 
-```php
-function onSignin()
-{
-    try {
-        return $this->account->onSignin();
+    function onSignin()
+    {
+        try {
+            return $this->account->onSignin();
+        }
+        catch (Exception $ex) {
+            Log::error($ex);
+        }
     }
-    catch (Exception $ex) {
-        Log::error($ex);
-    }
-}
-```
 
 Here the local handler method will take priority over the **account** component's event handler. Then we simply inherit the logic by calling the parent handler manually, via the component object (`$this->account`).
 
@@ -245,71 +219,53 @@ There is an `Auth` facade you may use for common tasks, it primarily inherits th
 
 You may use `Auth::register` to register an account:
 
-```php
-$user = Auth::register([
-    'name' => 'Some User',
-    'email' => 'some@website.tld',
-    'password' => 'changeme',
-    'password_confirmation' => 'changeme',
-]);
-```
+    $user = Auth::register([
+        'name' => 'Some User',
+        'email' => 'some@website.tld',
+        'password' => 'changeme',
+        'password_confirmation' => 'changeme',
+    ]);
 
 The second argument can specify if the account should be automatically activated:
 
-```php
-// Auto activate this user
-$user = Auth::register([...], true);
-```
+    // Auto activate this user
+    $user = Auth::register([...], true);
 
 The `Auth::check` method is a quick way to check if the user is signed in.
 
-```php
-// Returns true if signed in.
-$loggedIn = Auth::check();
-```
+    // Returns true if signed in.
+    $loggedIn = Auth::check();
 
 To return the user model that is signed in, use `Auth::getUser` instead.
 
-```php
-// Returns the signed in user
-$user = Auth::getUser();
-```
+    // Returns the signed in user
+    $user = Auth::getUser();
 
 You may authenticate a user by providing their login and password with `Auth::authenticate`.
 
-```php
-// Authenticate user by credentials
-$user = Auth::authenticate([
-    'login' => post('login'),
-    'password' => post('password')
-]);
-```
+    // Authenticate user by credentials
+    $user = Auth::authenticate([
+        'login' => post('login'),
+        'password' => post('password')
+    ]);
 
 The second argument is used to store a non-expire cookie for the user.
 
-```php
-$user = Auth::authenticate([...], true);
-```
+    $user = Auth::authenticate([...], true);
 
 You can also authenticate as a user simply by passing the user model along with `Auth::login`.
 
-```php
-// Sign in as a specific user
-Auth::login($user);
-```
+    // Sign in as a specific user
+    Auth::login($user);
 
 The second argument is the same.
 
-```php
-// Sign in and remember the user
-Auth::login($user, true);
-```
+    // Sign in and remember the user
+    Auth::login($user, true);
 
 You may look up a user by their login name using the `Auth::findUserByLogin` method.
 
-```php
-$user = Auth::findUserByLogin('some@email.tld');
-```
+    $user = Auth::findUserByLogin('some@email.tld');
 
 ## Guest users
 
@@ -317,81 +273,68 @@ Creating a guest user allows the registration process to be deferred. For exampl
 
 Use the `Auth::registerGuest` method to create a guest user, it will return a user object and can be called multiple times. The unique identifier is the email address, which is a required field.
 
-```php
-$user = Auth::registerGuest(['email' => 'person@acme.tld']);
-```
+    $user = Auth::registerGuest(['email' => 'person@acme.tld']);
 
 When a user registers with the same email address using the `Auth::register` method, they will inherit the existing guest user account.
 
-```php
-// This will not throw an "Email already taken" error
-$user = Auth::register([
-    'email' => 'person@acme.tld',
-    'password' => 'changeme',
-    'password_confirmation' => 'changeme',
-]);
-```
+    // This will not throw an "Email already taken" error
+    $user = Auth::register([
+        'email' => 'person@acme.tld',
+        'password' => 'changeme',
+        'password_confirmation' => 'changeme',
+    ]);
 
 > **Important**: If you are using guest accounts, it is important to disable sensitive functionality for user accounts that are not verified, since it may be possible for anyone to inherit a guest account.
 
 You may also convert a guest to a registered user with the `convertToRegistered` method. This will generate a random password and sends an invitation using the `winter.user::mail.invite` template.
 
-```php
-$user->convertToRegistered();
-```
+    $user->convertToRegistered();
 
 To disable the notification and password reset, pass the first argument as false.
 
-```php
-$user->convertToRegistered(false);
-```
+    $user->convertToRegistered(false);
 
 ## Events
 
 This plugin will fire some global events that can be useful for interacting with other plugins.
 
-- `winter.user.beforeRegister`: Before the user's registration is processed. Passed the `$data` variable by reference to enable direct modifications to the `$data` provided to the `Auth::register()` method.
-- `winter.user.register`: The user has successfully registered. Passed the `$user` object and the submitted `$data` variable.
-- `winter.user.beforeAuthenticate`: Before the user is attempting to authenticate using the Account component.
-- `winter.user.login`: The user has successfully signed in.
-- `winter.user.logout`: The user has successfully signed out.
-- `winter.user.activate`: The user has activated their own account by email validation.
-- `winter.user.deactivate`: The user has opted-out of the site by deactivating their account. This should be used to disable any content the user may want removed.
-- `winter.user.reactivate`: The user has reactivated their own account by signing back in. This should revive the users content on the site.
-- `winter.user.getNotificationVars`: Fires when sending a user notification to enable passing more variables to the email templates. Passes the `$user` model the template will be for.
-- `winter.user.view.extendListToolbar`: Fires when the user listing page's toolbar is rendered.
-- `winter.user.view.extendPreviewToolbar`: Fires when the user preview page's toolbar is rendered.
+- **winter.user.beforeRegister**: Before the user's registration is processed. Passed the `$data` variable by reference to enable direct modifications to the `$data` provided to the `Auth::register()` method.
+- **winter.user.register**: The user has successfully registered. Passed the `$user` object and the submitted `$data` variable.
+- **winter.user.beforeAuthenticate**: Before the user is attempting to authenticate using the Account component.
+- **winter.user.login**: The user has successfully signed in.
+- **winter.user.logout**: The user has successfully signed out.
+- **winter.user.deactivate**: The user has opted-out of the site by deactivating their account. This should be used to disable any content the user may want removed.
+- **winter.user.reactivate**: The user has reactivated their own account by signing back in. This should revive the users content on the site.
+- **winter.user.getNotificationVars**: Fires when sending a user notification to enable passing more variables to the email templates. Passes the `$user` model the template will be for.
+- **winter.user.view.extendListToolbar**: Fires when the user listing page's toolbar is rendered.
+- **winter.user.view.extendPreviewToolbar**: Fires when the user preview page's toolbar is rendered.
 
 Here is an example of hooking an event:
 
-```php
-Event::listen('winter.user.deactivate', function($user) {
-    // Hide all posts by the user
-});
-```
+    Event::listen('winter.user.deactivate', function($user) {
+        // Hide all posts by the user
+    });
 
 A common requirement is to adapt another to a legacy authentication system. In the example below, the `WordPressLogin::check` method would check the user password using an alternative hashing method, and if successful, update to the new one used by Winter CMS.
 
-```php
-Event::listen('winter.user.beforeAuthenticate', function($component, $credentials) {
-    $login = array_get($credentials, 'login');
-    $password = array_get($credentials, 'password');
+    Event::listen('winter.user.beforeAuthenticate', function($component, $credentials) {
+        $login = array_get($credentials, 'login');
+        $password = array_get($credentials, 'password');
 
-    /*
-     * No such user exists
-     */
-    if (!$user = Auth::findUserByLogin($login)) {
-        return;
-    }
+        /*
+         * No such user exists
+         */
+        if (!$user = Auth::findUserByLogin($login)) {
+            return;
+        }
 
-    /*
-     * The user is logging in with their old WordPress account
-     * for the first time. Rehash their password using the new
-     * Winter CMS system.
-     */
-    if (WordPressLogin::check($user->password, $password)) {
-        $user->password = $user->password_confirmation = $password;
-        $user->forceSave();
-    }
-});
-```
+        /*
+         * The user is logging in with their old WordPress account
+         * for the first time. Rehash their password using the new
+         * Winter CMS system.
+         */
+        if (WordPressLogin::check($user->password, $password)) {
+            $user->password = $user->password_confirmation = $password;
+            $user->forceSave();
+        }
+    });

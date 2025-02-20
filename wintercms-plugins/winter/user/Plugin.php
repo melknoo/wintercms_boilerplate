@@ -26,7 +26,7 @@ class Plugin extends PluginBase
             'author'      => 'Alexey Bobkov, Samuel Georges',
             'icon'        => 'icon-user',
             'homepage'    => 'https://github.com/wintercms/wn-user-plugin',
-            'replaces'    => ['RainLab.User' => '~1.6'],
+            'replaces'    => ['RainLab.User' => '<= 1.5.4'],
         ];
     }
 
@@ -118,7 +118,7 @@ class Plugin extends PluginBase
                     ],
                     'usergroups' => [
                         'label'       => 'winter.user::lang.groups.menu_label',
-                        'icon'        => 'icon-users-viewfinder',
+                        'icon'        => 'icon-users',
                         'url'         => Backend::url('winter/user/usergroups'),
                         'permissions' => ['winter.users.access_groups']
                     ]
@@ -134,7 +134,7 @@ class Plugin extends PluginBase
                 'label'       => 'winter.user::lang.settings.menu_label',
                 'description' => 'winter.user::lang.settings.menu_description',
                 'category'    => SettingsManager::CATEGORY_USERS,
-                'icon'        => 'icon-user-gear',
+                'icon'        => 'icon-cog',
                 'class'       => 'Winter\User\Models\Settings',
                 'order'       => 500,
                 'permissions' => ['winter.users.access_settings']

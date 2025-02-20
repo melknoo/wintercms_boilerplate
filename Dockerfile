@@ -8,6 +8,11 @@ RUN apt-get update && apt-get install -y libevent-dev \
     && docker-php-ext-install sockets \
     && apt-get clean
 
+# Install Node.js and npm
+RUN curl -fsSL https://deb.nodesource.com/setup_16.x | bash - \
+    && apt-get install -y nodejs \
+    && apt-get clean
+
 # Set correct permissions (only on required directories)
 RUN chmod -R 777 /var/www/html/storage 
 

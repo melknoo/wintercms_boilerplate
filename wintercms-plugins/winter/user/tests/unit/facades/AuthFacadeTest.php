@@ -1,6 +1,4 @@
-<?php
-
-namespace Winter\User\Tests\Unit\Facades;
+<?php namespace Winter\User\Tests\Unit\Facades;
 
 use Auth;
 use Winter\User\Models\User;
@@ -8,7 +6,7 @@ use Winter\User\Tests\UserPluginTestCase;
 
 class AuthFacadeTest extends UserPluginTestCase
 {
-    public function testCanRegisterAUser()
+    public function testRegisteringAUser()
     {
         // register a user
         $user = Auth::register([
@@ -21,14 +19,14 @@ class AuthFacadeTest extends UserPluginTestCase
         // our one user should be returned
         $this->assertEquals(1, User::count());
         $this->assertInstanceOf('Winter\User\Models\User', $user);
-
+        
         // and that user should have the following data
         $this->assertFalse($user->is_activated);
         $this->assertEquals('Some User', $user->name);
         $this->assertEquals('some@website.tld', $user->email);
     }
 
-    public function testCanRegisterAndAutomaticallyActivateAUser()
+    public function testRegisteringAUserWithAutoActivation()
     {
         // register a user with the auto-activate flag
         $user = Auth::register([
@@ -45,7 +43,7 @@ class AuthFacadeTest extends UserPluginTestCase
         $this->assertTrue(Auth::check());
     }
 
-    public function testCanRegisterAGuest()
+    public function testRegisteringAGuest()
     {
         // register a guest
         $guest = Auth::registerGuest(['email' => 'person@acme.tld']);
@@ -59,7 +57,7 @@ class AuthFacadeTest extends UserPluginTestCase
         $this->assertEquals('person@acme.tld', $guest->email);
     }
 
-    public function testCanLoginAndCheckAuthenticationAndActivation()
+    public function testLoginAndCheckingAuthentication()
     {
         // we should not be authenticated
         $this->assertFalse(Auth::check());

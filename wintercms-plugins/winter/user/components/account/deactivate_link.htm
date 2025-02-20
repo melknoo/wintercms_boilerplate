@@ -1,23 +1,16 @@
-<script>
-function toggleAccountDeactivateForm() {
-    const form = document.getElementById('accountDeactivateForm');
-    form.style.display = (form.style.display === 'block') ? 'none' : 'block';
-}
-</script>
-
 <a
     href="javascript:;"
-    onclick="toggleAccountDeactivateForm()"
-    class="deactivate"
->
+    onclick="$('#accountDeactivateForm').toggle()">
     Deactivate account
 </a>
 
 <div id="accountDeactivateForm" style="display: none">
     {{ form_ajax('onDeactivate') }}
+        <hr />
         <h3>Deactivate your account?</h3>
         <p>
-            Your account will be disabled and your details removed from the site. You can reactivate your account any time by signing back in.
+            Your account will be disabled and your details removed from the site.
+            You can reactivate your account any time by signing back in.
         </p>
         <div class="form-group">
             <label for="accountDeletePassword">To continue, please enter your password:</label>
@@ -28,7 +21,7 @@ function toggleAccountDeactivateForm() {
         </button>
         <a
             href="javascript:;"
-            onclick="toggleAccountDeactivateForm()">
+            onclick="$('#accountDeactivateForm').toggle()">
             I changed my mind
         </a>
     {{ form_close() }}
